@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 import joblib
 
-model = joblib.load('salary_predictor.pkl')
+model = joblib.load("safe_salary_predictor.pkl")
 
 st.title("Starting Salary Predictor")
 
@@ -21,7 +21,7 @@ field = st.selectbox("Field of Study", ['Arts', 'Law', 'Medicine', 'Computer Sci
 gender_map = {"Male": 1, "Female": 0, "Other": 2}
 field_map = {'Arts': 0, 'Law': 1, 'Medicine': 2, 'Computer Science': 3, 'Engineering': 4, 'Business': 5, 'Mathematics': 6}
 
-input_data = np.array([[
+"""input_data = np.array([[
     age,
     gender_map[gender],
     gpa,
@@ -33,7 +33,19 @@ input_data = np.array([[
     certs,
     soft_skills,
     networking
+]])"""
+input_data = np.array([[
+    age,
+    gpa,
+    sat_score,
+    ranking,
+    internships,
+    projects,
+    certifications,
+    soft_skills,
+    networking
 ]])
+
 
 prediction = model.predict(input_data)[0]
 st.success(f"Estimated Starting Salary: ₹{int(prediction):,}")
