@@ -2,38 +2,24 @@ import streamlit as st
 import numpy as np
 import joblib
 
+# Load the trained model
 model = joblib.load("safe_salary_predictor.pkl")
 
+# App title
 st.title("Starting Salary Predictor")
 
-age = st.slider("Age", 18, 40, 25)
-gender = st.selectbox("Gender", ["Male", "Female", "Other"])
+# Collect user input
+age = st.slider("Age", 18, 40, 22)
 gpa = st.slider("University GPA", 0.0, 4.0, 3.0)
-sat = st.slider("SAT Score", 400, 1600, 1100)
-ranking = st.number_input("University Ranking", min_value=1, max_value=1000, value=250)
+sat_score = st.number_input("SAT Score", 400, 1600, 1200)
+ranking = st.number_input("University Ranking", 1, 500, 100)
 internships = st.slider("Internships Completed", 0, 10, 2)
 projects = st.slider("Projects Completed", 0, 20, 5)
-certs = st.slider("Certifications", 0, 10, 2)
-soft_skills = st.slider("Soft Skills Score (1–10)", 1, 10, 7)
+certifications = st.slider("Certifications", 0, 10, 2)
+soft_skills = st.slider("Soft Skills Score (1–10)", 1, 10, 6)
 networking = st.slider("Networking Score (1–10)", 1, 10, 5)
-field = st.selectbox("Field of Study", ['Arts', 'Law', 'Medicine', 'Computer Science', 'Engineering', 'Business', 'Mathematics'])
 
-gender_map = {"Male": 1, "Female": 0, "Other": 2}
-field_map = {'Arts': 0, 'Law': 1, 'Medicine': 2, 'Computer Science': 3, 'Engineering': 4, 'Business': 5, 'Mathematics': 6}
-
-"""input_data = np.array([[
-    age,
-    gender_map[gender],
-    gpa,
-    sat,
-    ranking,
-    field_map[field],
-    internships,
-    projects,
-    certs,
-    soft_skills,
-    networking
-]])"""
+# Prepare input for prediction (order must match model training)
 input_data = np.array([[
     age,
     gpa,
@@ -46,6 +32,7 @@ input_data = np.array([[
     networking
 ]])
 
-
-prediction = model.predict(input_data)[0]
-st.success(f"Estimated Starting Salary: ₹{int(prediction):,}")
+# Predict and display result
+if st.button("Predict Starting Salary"):
+    predicted_salary = model.predict(input_data)[0]
+    st.success(f"Estimated Starting Salary: ₹{int(predicted_salary):,}")
